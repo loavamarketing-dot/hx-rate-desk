@@ -1683,9 +1683,6 @@ select:focus,button:focus-visible,input:focus{border-color:#6ecae7!important;box
       <input type="file" id="loadDataInput" accept=".json" style="display:none;">
       <button class="btn-ghost" id="loadCsvBtn">📈 Load Treasury/Futures CSVs</button>
       <input type="file" id="loadCsvInput" accept=".csv" multiple style="display:none;">
-      <button class="btn-ghost" id="liveDataBtn">🌐 Live Data Settings</button>
-      <button class="btn-ghost" id="liveDataFetchAllBtn" title="Fetch every live data source in one click">⚡ Update Live Data</button>
-      <span class="refresh-status" id="liveStatus"></span>
       <span class="refresh-status" id="refreshStatus"></span>
       <span class="refresh-status" id="csvStatus"></span>
     </div>
@@ -8322,17 +8319,9 @@ function toggleLiveDataPanel(anchorEl){
   panel.style.top = top+'px';
   panel.style.visibility = 'visible';
 }
-document.getElementById('liveDataBtn').addEventListener('click', e=>{
-  e.stopPropagation();
-  toggleLiveDataPanel(e.currentTarget);
-});
 document.getElementById('globalLiveDataBtn').addEventListener('click', e=>{
   e.stopPropagation();
   toggleLiveDataPanel(e.currentTarget);
-});
-document.getElementById('liveDataFetchAllBtn').addEventListener('click', e=>{
-  e.stopPropagation();
-  fetchAllLiveData();
 });
 document.getElementById('globalLiveDataFetchAllBtn').addEventListener('click', e=>{
   e.stopPropagation();
@@ -8340,9 +8329,8 @@ document.getElementById('globalLiveDataFetchAllBtn').addEventListener('click', e
 });
 document.addEventListener('click', e=>{
   const liveDataPanel = document.getElementById('liveDataPanel');
-  const liveDataTrigger = document.getElementById('liveDataBtn');
-  const liveDataTrigger2 = document.getElementById('globalLiveDataBtn');
-  const clickedTrigger = e.target===liveDataTrigger || liveDataTrigger.contains(e.target) || e.target===liveDataTrigger2 || liveDataTrigger2.contains(e.target);
+  const liveDataTrigger = document.getElementById('globalLiveDataBtn');
+  const clickedTrigger = e.target===liveDataTrigger || liveDataTrigger.contains(e.target);
   if(liveDataPanel.style.display!=='none' && !liveDataPanel.contains(e.target) && !clickedTrigger){
     liveDataPanel.style.display = 'none';
   }
@@ -8354,36 +8342,35 @@ document.getElementById('liveYieldMonthsBack').addEventListener('blur', saveLive
 document.getElementById('liveFuturesRange').addEventListener('change', saveLiveFuturesRange);
 document.getElementById('liveFetchYahooYieldsBtn').addEventListener('click', async ()=>{
   const r = await fetchYahooYields();
-  if(r.ok){ document.getElementById('liveStatus').textContent = 'Yahoo yield history loaded.'; renderAll(); }
+  if(r.ok){ document.getElementById('globalLiveStatus').textContent = 'Yahoo yield history loaded.'; renderAll(); }
 });
 document.getElementById('liveTwelveDataKey').addEventListener('change', saveTwelveDataKey);
 document.getElementById('liveTwelveDataKey').addEventListener('blur', saveTwelveDataKey);
 document.getElementById('liveFetchTwelveDataBtn').addEventListener('click', async ()=>{
   const r = await fetchTwelveDataYields();
-  if(r.ok){ document.getElementById('liveStatus').textContent = 'Twelve Data yield history loaded.'; renderAll(); }
+  if(r.ok){ document.getElementById('globalLiveStatus').textContent = 'Twelve Data yield history loaded.'; renderAll(); }
 });
 document.getElementById('liveFetchCnbcYieldsBtn').addEventListener('click', async ()=>{
   const r = await fetchCnbcYields();
-  if(r.ok){ document.getElementById('liveStatus').textContent = 'CNBC yields loaded.'; renderAll(); }
+  if(r.ok){ document.getElementById('globalLiveStatus').textContent = 'CNBC yields loaded.'; renderAll(); }
 });
 document.getElementById('liveFetchFuturesBtn').addEventListener('click', async ()=>{
   const r = await fetchLiveFutures();
-  if(r.ok){ document.getElementById('liveStatus').textContent = 'Delayed futures loaded.'; renderAll(); }
+  if(r.ok){ document.getElementById('globalLiveStatus').textContent = 'Delayed futures loaded.'; renderAll(); }
 });
 document.getElementById('liveFetchNewsBtn').addEventListener('click', async ()=>{
   const r = await fetchLiveNews();
-  if(r.ok){ document.getElementById('liveStatus').textContent = 'Live news loaded.'; renderAll(); }
+  if(r.ok){ document.getElementById('globalLiveStatus').textContent = 'Live news loaded.'; renderAll(); }
 });
 document.getElementById('liveFredKey').addEventListener('change', saveFredKey);
 document.getElementById('liveFredKey').addEventListener('blur', saveFredKey);
 document.getElementById('liveFetchEconBtn').addEventListener('click', async ()=>{
   const r = await fetchEconCalendarFred();
-  if(r.ok){ document.getElementById('liveStatus').textContent = 'Economic calendar loaded from FRED.'; renderAll(); }
+  if(r.ok){ document.getElementById('globalLiveStatus').textContent = 'Economic calendar loaded from FRED.'; renderAll(); }
 });
 async function fetchAllLiveData(){
-  const status = document.getElementById('liveStatus');
   const globalStatus = document.getElementById('globalLiveStatus');
-  const setStatus = txt => { if(status) status.textContent = txt; if(globalStatus) globalStatus.textContent = txt; };
+  const setStatus = txt => { if(globalStatus) globalStatus.textContent = txt; };
   setStatus('Fetching all live data\u2026');
   // Each result is paired with a readable label so a failure can be called
   // out by name in the final status, instead of just a bare "4/6 succeeded"
