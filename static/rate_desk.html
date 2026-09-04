@@ -1037,14 +1037,19 @@
   .bias-badge{font:700 10px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:7px 10px;border:1px solid var(--line);color:var(--text-dim);background:var(--surface-2);white-space:nowrap;}
   .bias-badge.up{color:var(--wine);background:var(--wine-soft);border-color:rgba(194,83,104,.35);}
   .bias-badge.down{color:var(--teal);background:var(--teal-soft);border-color:rgba(87,166,149,.35);}
-  .desk-groups{display:grid;grid-template-columns:1fr;gap:14px;}
+  .desk-groups{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
   .desk-group{padding:14px 16px;border:1px solid var(--line-soft);border-radius:12px;background:rgba(26,36,64,.62);}
+  .desk-group-outlook{border-color:rgba(216,172,66,.3);background:rgba(45,38,20,.35);}
   .desk-group-title{font:600 10.5px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:9px;padding-bottom:8px;border-bottom:1px solid var(--line-soft);}
   .desk-group-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:3px 0;}
   .desk-group-row .dgr-lab{font:10px 'IBM Plex Mono',monospace;color:var(--text-faint);white-space:nowrap;}
   .desk-group-row .dgr-val{font:600 14px 'IBM Plex Mono',monospace;color:var(--text);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .dgr-note{font:9.5px 'IBM Plex Mono',monospace;color:var(--text-faint);text-align:right;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  @media(max-width:650px){.desk-read-head{flex-direction:column;}.desk-nav{top:4px;}.desk-nav button{padding:7px 8px;}}
+  .dgr-val.vol-stable{color:#39ff8a;}
+  .dgr-val.vol-moderate{color:var(--gold);}
+  .dgr-val.vol-volatile{color:#ff3b3b;}
+  @media(max-width:1100px){.desk-groups{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:650px){.desk-groups{grid-template-columns:1fr;}.desk-read-head{flex-direction:column;}.desk-nav{top:4px;}.desk-nav button{padding:7px 8px;}}
   .desk-actions{display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft);}
   .desk-actions .desk-callout{font:11px 'IBM Plex Mono',monospace;color:var(--text-dim);flex:1;}
   .section-anchor{scroll-margin-top:82px;}
@@ -1861,17 +1866,40 @@ select:focus,button:focus-visible,input:focus{border-color:#6ecae7!important;box
     </div>
     <div class="desk-groups">
       <div class="desk-group">
-        <div class="desk-group-title">Pricing &amp; position</div>
+        <div class="desk-group-title">Pricing</div>
         <div class="desk-group-row"><span class="dgr-lab">Best price</span><span class="dgr-val" id="drBest">—</span></div>
         <div class="dgr-note" id="drBestNote">—</div>
         <div class="desk-group-row"><span class="dgr-lab">Median rate</span><span class="dgr-val" id="drMedian">—</span></div>
         <div class="desk-group-row"><span class="dgr-lab">Coverage</span><span class="dgr-val" id="drCoverage">—</span></div>
         <div class="dgr-note">runs on file</div>
+      </div>
+      <div class="desk-group">
+        <div class="desk-group-title">Competitive position</div>
         <div class="desk-group-row"><span class="dgr-lab">HomeXpress gap</span><span class="dgr-val" id="drHx">—</span></div>
         <div class="dgr-note" id="drHxNote">vs benchmark</div>
         <div class="desk-group-row"><span class="dgr-lab">HomeXpress rank</span><span class="dgr-val" id="drHxRank">—</span></div>
         <div class="dgr-note" id="drHxRankNote">of lenders quoting</div>
         <div class="desk-group-row"><span class="dgr-lab">Current benchmark</span><span class="dgr-val" id="drInvestor">—</span></div>
+      </div>
+      <div class="desk-group">
+        <div class="desk-group-title">Market context</div>
+        <div class="desk-group-row"><span class="dgr-lab">Market depth</span><span class="dgr-val" id="drLenders">—</span></div>
+        <div class="dgr-note" id="drLendersNote">lenders quoting</div>
+        <div class="desk-group-row"><span class="dgr-lab">5Y Treasury spread</span><span class="dgr-val" id="drTreasury">—</span></div>
+        <div class="desk-group-row"><span class="dgr-lab">2Y Treasury spread</span><span class="dgr-val" id="drTreasury2y">—</span></div>
+        <div class="desk-group-row"><span class="dgr-lab">2s5s curve (5Y − 2Y)</span><span class="dgr-val" id="drCurve25">—</span></div>
+        <div class="desk-group-row"><span class="dgr-lab">Next event</span><span class="dgr-val" id="drNextEvent">—</span></div>
+        <div class="dgr-note" id="drNextEventNote">—</div>
+      </div>
+      <div class="desk-group desk-group-outlook">
+        <div class="desk-group-title">Outlook</div>
+        <div class="desk-group-row"><span class="dgr-lab">Trend</span><span class="dgr-val" id="drTrend">—</span></div>
+        <div class="dgr-note" id="drTrendNote">—</div>
+        <div class="desk-group-row"><span class="dgr-lab">Volatility</span><span class="dgr-val" id="drVol">—</span></div>
+        <div class="dgr-note" id="drVolNote">—</div>
+        <div class="desk-group-row"><span class="dgr-lab">Anomalies</span><button class="dgr-val anomaly-trigger" id="drAnomaly" type="button">—</button></div>
+        <div class="dgr-note" id="drAnomalyNote">last 8 runs</div>
+        <div class="anomaly-popover" id="drAnomalyPopover" hidden></div>
       </div>
     </div>
     <div class="desk-actions">
@@ -6689,7 +6717,9 @@ function renderDeskRead(){
   const hx=last&&last.hxPrice!=null&&last.bestPrice!=null?last.hxPrice-last.bestPrice:null;
   document.getElementById('drHx').textContent=hx==null?'—':`${hx>=0?'+':''}${hx.toFixed(3)}`;
   document.getElementById('drHxNote').textContent=hx==null?'no HX benchmark':'HomeXpress − best price';
+  document.getElementById('drLenders').textContent=last&&last.lenders!=null?last.lenders:'—';
   const lenderD=last&&prev&&last.lenders!=null&&prev.lenders!=null?last.lenders-prev.lenders:null;
+  document.getElementById('drLendersNote').textContent=lenderD==null?'lenders quoting':`${lenderD>0?'+':''}${lenderD} vs prior run`;
   document.getElementById('drCoverage').textContent=rows.length.toLocaleString();
 
   // HomeXpress rank
@@ -6709,9 +6739,112 @@ function renderDeskRead(){
   const fullRows = bucketRows(state.product, state.fico, state.ltv);
   const fullKeyRows = fullRows.filter(r=>r[key]!=null);
 
-  // Latest 5Y Treasury yield, needed below for the spread-context sentence.
+  // 5Y Treasury spread
   const yieldPts = bestYieldPoints();
   const lastY5 = yieldPts.length ? yieldPts[yieldPts.length-1].y5 : null;
+  const lastY2 = yieldPts.length ? yieldPts[yieldPts.length-1].y2 : null;
+  const treasuryEl = document.getElementById('drTreasury');
+  if(lastY5!=null && last && last.medianRate!=null){
+    const spread = last.medianRate - lastY5;
+    treasuryEl.textContent = `${spread>=0?'+':''}${spread.toFixed(2)} pts`;
+  } else {
+    treasuryEl.textContent = '—';
+  }
+
+  // 2Y Treasury spread — same idea as the 5Y spread above, against the
+  // shorter end of the curve.
+  const treasury2yEl = document.getElementById('drTreasury2y');
+  if(lastY2!=null && last && last.medianRate!=null){
+    const spread2 = last.medianRate - lastY2;
+    treasury2yEl.textContent = `${spread2>=0?'+':''}${spread2.toFixed(2)} pts`;
+  } else {
+    treasury2yEl.textContent = '—';
+  }
+
+  // 2s5s curve: the Treasury curve's own shape (5Y yield minus 2Y yield),
+  // independent of this bucket's mortgage rate. Positive means the curve is
+  // normal/upward-sloping (5Y yields more than 2Y); negative means it's
+  // inverted (a 2Y note yields more than a 5Y note) — a widely-watched signal
+  // of growth/recession expectations, unrelated to mortgage pricing itself.
+  const curve25El = document.getElementById('drCurve25');
+  if(lastY5!=null && lastY2!=null){
+    const curve = lastY5 - lastY2;
+    curve25El.textContent = `${curve>=0?'+':''}${curve.toFixed(2)} pts`;
+  } else {
+    curve25El.textContent = '—';
+  }
+
+  // Next scheduled event
+  const now = new Date();
+  const upcoming = ECONOMIC_EVENTS.filter(e => e.dateObj >= new Date(now.getFullYear(),now.getMonth(),now.getDate()));
+  const nextEventEl = document.getElementById('drNextEvent');
+  const nextEventNoteEl = document.getElementById('drNextEventNote');
+  if(upcoming.length){
+    const ev = upcoming[0];
+    const days = Math.round((ev.dateObj - now) / 86400000);
+    const dayTxt = days<=0 ? 'today' : (days===1 ? 'in 1 day' : `in ${days} days`);
+    nextEventEl.textContent = `${EVENT_LABELS[ev.cat]} ${dayTxt}`;
+    nextEventNoteEl.textContent = fmtDateShort(ev.dateObj);
+  } else {
+    nextEventEl.textContent = '—';
+    nextEventNoteEl.textContent = 'no events on file';
+  }
+
+  // --- Outlook: trend/forecast, volatility tier, and anomaly flag for this bucket ---
+  const trendEl = document.getElementById('drTrend');
+  const trendNoteEl = document.getElementById('drTrendNote');
+  const fc = forecastSeries(rows, key, state.window, state.horizon);
+  if(!state.forecastEnabled){
+    trendEl.textContent = 'Off';
+    trendNoteEl.textContent = 'forecast disabled';
+  } else if(fc){
+    const dir = fc.slope>0 ? 'Rising' : (fc.slope<0 ? 'Falling' : 'Flat');
+    const nextVal = fc.fy[fc.fy.length-1];
+    const band = fc.upper.length ? (fc.upper[fc.upper.length-1]-fc.fy[fc.fy.length-1]) : 0;
+    trendEl.textContent = dir;
+    trendNoteEl.textContent = `→ ${state.metric==='price'?nextVal.toFixed(3):nextVal.toFixed(3)+'%'} in ${state.horizon} runs (±${band.toFixed(3)})`;
+  } else {
+    trendEl.textContent = '—';
+    trendNoteEl.textContent = 'not enough history';
+  }
+
+  const volEl = document.getElementById('drVol');
+  const volNoteEl = document.getElementById('drVolNote');
+  const volAll = computeVolatility(state.product, state.volFromTime, state.volToTime, 'rate');
+  const volMine = volAll.find(v=>v.fico===state.fico && v.ltv===state.ltv);
+  if(volMine && volAll.length>2){
+    const sorted = volAll.map(v=>v.std).sort((a,b)=>a-b);
+    const rank = sorted.findIndex(s=>s>=volMine.std) / sorted.length;
+    const tier = rank<0.33 ? 'Stable' : (rank<0.67 ? 'Moderate' : 'Volatile');
+    volEl.textContent = tier;
+    volEl.className = 'dgr-val vol-'+tier.toLowerCase();
+    volNoteEl.textContent = `std ${(volMine.std*100).toFixed(1)} bp · vs ${volAll.length} buckets`;
+  } else {
+    volEl.textContent = '—';
+    volEl.className = 'dgr-val';
+    volNoteEl.textContent = 'not enough history';
+  }
+
+  const anomalyEl = document.getElementById('drAnomaly');
+  const anomalyNoteEl = document.getElementById('drAnomalyNote');
+  const keyPts = rows.filter(r=>r[key]!=null);
+  const allAnomalies = detectAnomalies(rows, key);
+  const recentAnomalies = allAnomalies.filter(a => {
+    const idx = keyPts.findIndex(r=>r.date.getTime()===a.date.getTime());
+    return idx>=0 && (keyPts.length - idx) <= 8;
+  });
+  if(recentAnomalies.length){
+    const latest = recentAnomalies[recentAnomalies.length-1];
+    anomalyEl.textContent = `${recentAnomalies.length} flagged`;
+    anomalyEl.className = 'dgr-val vol-volatile anomaly-trigger';
+    anomalyEl.disabled = false;
+    anomalyNoteEl.textContent = `latest ${fmtDate(latest.date)} · z=${latest.z.toFixed(1)}`;
+  } else {
+    anomalyEl.textContent = 'None recent';
+    anomalyEl.className = 'dgr-val vol-stable anomaly-trigger';
+    anomalyEl.disabled = true;
+    anomalyNoteEl.textContent = `${allAnomalies.length} total on file`;
+  }
 
   // --- Streak: consecutive most-recent runs moving the same direction,
   // computed on the bucket's full history so it survives a narrowed slider.
@@ -6770,6 +6903,55 @@ function renderDeskRead(){
   document.getElementById('drCallout').textContent=callout.trim()||'Not enough history to generate a desk read.';
 }
 
+function toggleAnomalyPopover(){
+  const btn=document.getElementById('drAnomaly');
+  const pop=document.getElementById('drAnomalyPopover');
+  if(!btn||!pop||btn.disabled) return;
+  // Closing the Outliers popover shouldn't leave an orphaned z-breakdown
+  // popup floating on screen if one was opened from inside it.
+  const zPop = document.getElementById('anomalyZPopover');
+  if(zPop){ zPop.hidden=true; zPop._openFor=null; }
+  if(!pop.hidden){ pop.hidden=true; return; }
+  const rows=chartScopedRows(currentRows());
+  const key=state.metric==='price'?'bestPrice':'medianRate';
+  const keyPts=rows.filter(r=>r[key]!=null);
+  const anomalies=detectAnomalies(rows,key);
+  const recent=anomalies.filter(a=>{
+    const idx=keyPts.findIndex(r=>r.date.getTime()===a.date.getTime());
+    return idx>=0 && (keyPts.length-idx)<=8;
+  }).slice().reverse();
+  const fmtValue=v=>state.metric==='price'?v.toFixed(3):v.toFixed(3)+'%';
+  const fmtStd=v=>state.metric==='price'?v.toFixed(3):(v*100).toFixed(1)+' bp';
+  // Same favorable-direction flip as the Anomalies list — price up is
+  // favorable, rate down is favorable.
+  const isFavorable=a=>state.metric==='price'?a.direction==='up':a.direction==='down';
+  pop.innerHTML=`<div class="anomaly-pop-head"><strong>Outlier${recent.length===1?'':'s'} in last 8 runs</strong><button type="button" class="anomaly-pop-close">×</button></div>`+recent.map((a,i)=>`<div class="anomaly-pop-row"><div class="anomaly-pop-date">${fmtDate(a.date)} · FICO ${a.fico ?? state.fico} · LTV ${a.ltv ?? state.ltv}%</div><div class="anomaly-pop-main"><span class="anomaly-pop-value">${fmtValue(a.value)}</span><button type="button" class="anomaly-pop-z ${isFavorable(a)?'up':'down'}" data-outlier-idx="${i}" style="cursor:pointer; border-bottom:1px dotted currentColor; background:none; border-top:0; border-left:0; border-right:0; font:inherit;">z=${a.z.toFixed(1)}</button></div><div class="anomaly-pop-detail">Expected ${fmtValue(a.mean)} · window σ ${fmtStd(a.std)}<br>Benchmark investor: ${a.investor || 'unknown'}</div></div>`).join('');
+  // Stashed so the click handler below can pull the exact anomaly for
+  // whichever z-value got clicked, same pattern as the Signals list.
+  pop._anomalies = recent;
+  pop.hidden=false;
+  const r=btn.getBoundingClientRect(),gap=8,w=Math.min(330,window.innerWidth-20);
+  pop.style.width=w+'px';
+  let left=r.left,top=r.bottom+gap;
+  if(left+w>window.innerWidth-10) left=window.innerWidth-w-10;
+  if(top+pop.offsetHeight>window.innerHeight-10) top=Math.max(10,r.top-pop.offsetHeight-gap);
+  pop.style.left=Math.max(10,left)+'px'; pop.style.top=top+'px';
+  pop.querySelector('.anomaly-pop-close')?.addEventListener('click',e=>{
+    e.stopPropagation();
+    pop.hidden=true;
+    const zPop = document.getElementById('anomalyZPopover');
+    if(zPop){ zPop.hidden=true; zPop._openFor=null; }
+  });
+}
+document.getElementById('drAnomalyPopover')?.addEventListener('click', e=>{
+  const btn = e.target.closest('[data-outlier-idx]');
+  if(!btn) return;
+  e.stopPropagation();
+  const pop = document.getElementById('drAnomalyPopover');
+  const a = pop._anomalies && pop._anomalies[+btn.dataset.outlierIdx];
+  if(a) showZScorePopover(btn, a);
+});
+
 function scrollToDeskSection(id){
   const el = document.getElementById(id);
   if(!el) return;
@@ -6781,6 +6963,9 @@ function scrollToDeskSection(id){
 }
 
 function initDeskUpgrade(){
+  document.getElementById('drAnomaly')?.addEventListener('click',e=>{e.stopPropagation();toggleAnomalyPopover();});
+  document.addEventListener('click',e=>{const pop=document.getElementById('drAnomalyPopover');const zPop=document.getElementById('anomalyZPopover');if(pop&&!pop.hidden&&!pop.contains(e.target)&&e.target.id!=='drAnomaly'&&!(zPop&&zPop.contains(e.target))){pop.hidden=true;if(zPop){zPop.hidden=true;zPop._openFor=null;}}});
+  window.addEventListener('resize',()=>{const pop=document.getElementById('drAnomalyPopover');if(pop&&!pop.hidden)pop.hidden=true;});
   document.querySelectorAll('#deskNav [data-jump]').forEach(btn=>btn.addEventListener('click',()=>{
     scrollToDeskSection(btn.dataset.jump);
   }));
